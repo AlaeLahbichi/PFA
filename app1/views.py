@@ -28,6 +28,7 @@ from datetime import datetime
 from .utils import get_device_info
 import pytz # type: ignore
 from django.db.models import Q
+import smtplib
 
 
 
@@ -374,19 +375,22 @@ def register_action(request):
                 'username' : request.POST.get('username') , 
                 'email' : request.POST.get('email') 
             }
-
-            html_content = render_to_string('mail/verification.html' ,context)
-            optimized_html = transform(html_content)
-            email = EmailMultiAlternatives(
-                subject='Confirmation d\'email ',
-                body=strip_tags(optimized_html),
-                from_email='nodej1887@gmail.com',
-                to=[request.POST.get('email')],
-            )
-            email.attach_alternative(optimized_html, "text/html")
-            email.send()
-            messages.success(request,'Inscription avec succés , veuillez vérifier votre adresse email avant de se connecter')
-            return redirect('login')
+            try : 
+                html_content = render_to_string('mail/verification.html' ,context)
+                optimized_html = transform(html_content)
+                email = EmailMultiAlternatives(
+                    subject='Confirmation d\'email ',
+                    body=strip_tags(optimized_html),
+                    from_email='nodej1887@gmail.com',
+                    to=[request.POST.get('email')],
+                )
+                email.attach_alternative(optimized_html, "text/html")
+                email.send()
+                messages.success(request,'Inscription avec succés , veuillez vérifier votre adresse email avant de se connecter')
+                return redirect('login')
+            except Exception as e : 
+                messages.error(request,"Erreur de connexion " , e )
+                return redirect('login')
         else :
             messages.error(request,form.errors)
     else :
@@ -404,6 +408,9 @@ def login_action(request):
             username = get_object_or_404(CustomUser , email = email ).username
         except Http404 :
             messages.error(request,'Adresse email ne correspond à aucun compte')
+            return redirect('login')
+        except Exception as e :
+            messages.error(request,"Erreur : " , e)
             return redirect('login')
         user = authenticate(request , username = username , password = password )
         if user is not None :
@@ -446,6 +453,15 @@ def mdp(request):
             return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
         except CustomUser.DoesNotExist:
             messages.error(request, "L'email que vous avez fourni ne correspond à aucun utilisateur.")
+            return redirect(request.META.get('HTTP_REFERER', '/'))
+        except smtplib.SMTPRecipientsRefused as e :
+            messages.error(request,"Erreur (email) : " , e )
+            return redirect(request.META.get('HTTP_REFERER', '/'))
+        except smtplib.SMTPConnectError as e : 
+            messages.error(request,"Connexion perdue , Erreur : " , e )
+            return redirect(request.META.get('HTTP_REFERER', '/'))
+        except Exception as e : 
+            messages.error(request,"Erreur : " , e)
             return redirect(request.META.get('HTTP_REFERER', '/'))
 
 def change_mdp_page(request,user_id):
@@ -501,6 +517,16 @@ def change_mdp_action(request, user_id):
         except CustomUser.DoesNotExist:
             messages.error(request, "Une erreur est survenue.")
             return redirect('login')
+        except smtplib.SMTPRecipientsRefused as e :
+            messages.error(request,"Erreur (email) : " , e )
+            return redirect('login')
+        except smtplib.SMTPConnectError as e : 
+            messages.error(request,"Connexion perdue , Erreur : " , e )
+            return redirect('login')
+        except Exception as e : 
+            messages.error(request,"Erreur : " , e)
+            return redirect('login')
+        
         
 #Template en relation avec le profile de l'utilisateur 
 @login_required(login_url='/app1/login/')
@@ -535,8 +561,12 @@ def change_password_profile(request , username):
                 email.send()
                 messages.success(request,"Modification de password avec succés")
                 return redirect('login')
+            except smtplib.SMTPRecipientsRefused as e :
+                messages.error(request,"Erreur (email) : " , e )
+            except smtplib.SMTPConnectError as e : 
+                messages.error(request,"Connexion perdue , Erreur : " , e )
             except Exception as e : 
-                messages.error(request,"Erreur : " , e )
+                messages.error(request,"Erreur est servenue ( connexion perdue ) " , e )
                 return redirect(request.META.get('HTTP_REFERER', '/'))
         else :
             messages.error(request,'Vous avez pas saisi le bon mot de passe')
