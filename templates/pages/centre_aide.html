@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static "css/main/main.css" %}">
+  <link rel="stylesheet" href="{% static "css/pages/centre_aide.css" %}">
+  <title>Centre d'Aide COLOZEN</title>
+</head>
+<body>
+    {% include "../layouts/nav.html" %}
+  
+  <div class="container">
+    
+    <div class="help-grid">
+      <div class="sidebar">
+        <h3>Catégories</h3>
+        <ul>
+          <li><a href="#premiers-pas">Premiers pas</a></li>
+          <li><a href="#compte">Gérer votre compte</a></li>
+          <li><a href="#fonctionnalites">Fonctionnalités principales</a></li>
+          <li><a href="#problemes">Résoudre des problèmes</a></li>
+          <li><a href="#faq">Questions fréquentes</a></li>
+          <li><a href="#contact">Nous contacter</a></li>
+        </ul>
+      </div>
+      
+      <div class="content">
+        <section id="premiers-pas" class="section">
+          <h2>Premiers pas avec COLOZEN</h2>
+          <p>Bienvenue sur COLOZEN! Voici comment commencer à utiliser notre plateforme:</p>
+          
+          <h3>Créer un compte</h3>
+          <p>Pour profiter pleinement des fonctionnalités de COLOZEN, créez votre compte en quelques étapes simples:</p>
+          <ol>
+            <li>Cliquez sur "S'inscrire" en haut à droite de la page d'accueil</li>
+            <li>Remplissez le formulaire avec vos informations</li>
+            <li>Vérifiez votre adresse email en cliquant sur le lien reçu</li>
+            <li>Personnalisez votre profil pour une expérience optimale</li>
+          </ol>
+          
+          <h3>Explorer l'interface</h3>
+          <p>Notre interface est conçue pour être intuitive et facile à utiliser. Prenez quelques minutes pour explorer les différentes sections et vous familiariser avec notre plateforme.</p>
+        </section>
+        
+        <section id="compte" class="section">
+          <h2>Gérer votre compte</h2>
+          
+          <h3>Modifier vos informations personnelles</h3>
+          <p>Vous pouvez facilement mettre à jour vos informations personnelles à tout moment:</p>
+          <ol>
+            <li>Connectez-vous à votre compte</li>
+            <li>Cliquez sur votre nom d'utilisateur en haut à droite</li>
+            <li>Sélectionnez "Paramètres du compte"</li>
+            <li>Modifiez les informations souhaitées et cliquez sur "Enregistrer"</li>
+          </ol>
+          
+          <h3>Sécurité et confidentialité</h3>
+          <p>Nous prenons la sécurité de vos données très au sérieux. Vous pouvez gérer vos paramètres de confidentialité et de sécurité dans la section "Sécurité" de votre compte.</p>
+        </section>
+        
+        <section id="fonctionnalites" class="section">
+            <h2>Fonctionnalités principales</h2>
+            
+            <h3>Trouver une colocation facilement</h3>
+            <p>COLOZEN aide les étudiants à trouver des colocataires qui partagent les mêmes besoins et préférences :</p>
+            <ol>
+              <li>Créez un profil en quelques clics avec vos critères de recherche</li>
+              <li>Parcourez les offres de colocation proposées par d'autres étudiants</li>
+              <li>Discutez avec les profils compatibles et trouvez votre futur colocataire</li>
+            </ol>
+            
+            <h3>Publier une offre de colocation</h3>
+            <p>Vous avez une chambre ou un appartement à partager ? Proposez une offre simplement :</p>
+            <ol>
+              <li>Cliquez sur "Nouvelle offre" depuis votre tableau de bord</li>
+              <li>Décrivez le logement, le loyer, et les préférences de colocation</li>
+              <li>Recevez des candidatures d’étudiants intéressés et échangez avec eux</li>
+            </ol>
+          
+            <h3>Attirer les étudiants avec des offres ciblées</h3>
+            <p>Les entrepreneurs peuvent également utiliser COLOZEN pour promouvoir leurs logements ou services auprès des étudiants :</p>
+            <ol>
+              <li>Créez un compte professionnel pour accéder aux outils avancés</li>
+              <li>Publiez plusieurs offres de logement adaptées aux besoins étudiants</li>
+              <li>Profitez d'une visibilité ciblée auprès d'une audience étudiante active</li>
+            </ol>
+          </section>          
+        
+        <section id="problemes" class="section">
+          <h2>Résoudre des problèmes</h2>
+          
+          <h3>Problèmes de connexion</h3>
+          <p>Si vous rencontrez des difficultés pour vous connecter:</p>
+          <ul>
+            <li>Vérifiez que votre adresse email et votre mot de passe sont corrects</li>
+            <li>Essayez de réinitialiser votre mot de passe</li>
+            <li>Assurez-vous que votre compte a bien été activé</li>
+            <li>Vérifiez votre connexion internet</li>
+          </ul>
+          
+          <h3>Problèmes techniques</h3>
+          <p>Pour résoudre la plupart des problèmes techniques:</p>
+          <ul>
+            <li>Actualisez la page</li>
+            <li>Videz le cache de votre navigateur</li>
+            <li>Essayez d'utiliser un navigateur différent</li>
+            <li>Vérifiez que votre navigateur est à jour</li>
+          </ul>
+        </section>
+        
+        <section id="faq" class="section">
+            <h2>Questions fréquentes</h2>
+            
+            <div class="faq-item">
+              <div class="faq-question">
+                Comment trouver une colocation qui me correspond ?
+                <span>+</span>
+              </div>
+              <div class="faq-answer">
+                Créez un profil en précisant vos préférences (budget, localisation, type de colocataire, etc.). Vous pourrez ensuite consulter les offres compatibles et discuter directement avec les personnes concernées.
+              </div>
+            </div>
+            
+            <div class="faq-item">
+              <div class="faq-question">
+                Est-ce que COLOZEN est gratuit ?
+                <span>+</span>
+              </div>
+              <div class="faq-answer">
+                Oui, COLOZEN est totalement gratuit pour les étudiants. Certaines options premium destinées aux professionnels sont disponibles pour les entrepreneurs souhaitant plus de visibilité.
+              </div>
+            </div>
+          
+            <div class="faq-item">
+              <div class="faq-question">
+                Je ne reçois pas de réponses à mes messages, que faire ?
+                <span>+</span>
+              </div>
+              <div class="faq-answer">
+                Cela peut arriver si votre profil manque d’informations ou de photo. Pensez à le compléter et à écrire un message clair et amical. Vous pouvez aussi relancer poliment les utilisateurs après quelques jours.
+              </div>
+            </div>
+          
+            <div class="faq-item">
+              <div class="faq-question">
+                Quels sont les problèmes courants en colocation ?
+                <span>+</span>
+              </div>
+              <div class="faq-answer">
+                Les désaccords sur le ménage, le bruit ou les paiements sont fréquents. COLOZEN encourage la transparence dès le départ via des profils détaillés et des systèmes de notation pour faciliter une colocation harmonieuse.
+              </div>
+            </div>
+          
+            <div class="faq-item">
+              <div class="faq-question">
+                Puis-je publier une offre si je suis entrepreneur ou propriétaire ?
+                <span>+</span>
+              </div>
+              <div class="faq-answer">
+                Oui, vous pouvez créer un compte professionnel pour publier plusieurs annonces ciblant les étudiants et profiter d’une visibilité renforcée sur la plateforme.
+              </div>
+            </div>
+          </section>          
+        
+        <section id="contact" class="section">
+          <h2>Nous contacter</h2>
+          <p>Vous n'avez pas trouvé la réponse à votre question? Notre équipe d'assistance est là pour vous aider!</p>
+          
+          <div class="contact-methods">
+            <div class="contact-card">
+              <div class="contact-icon">✉️</div>
+              <h3>Email</h3>
+              <p>colozen@gmail.com</p>
+              <p>Réponse sous 24h</p>
+            </div>
+            
+            <div class="contact-card">
+              <div class="contact-icon">💬</div>
+              <h3>Chat en direct</h3>
+              <p>Disponible du lundi au vendredi</p>
+              <p>9h - 19h</p>
+              <a href="{% url "specificmessages" 12 %}" class="cta-button">Démarrer un chat</a>
+            </div>
+            
+            <div class="contact-card">
+              <div class="contact-icon">📞</div>
+              <h3>Téléphone</h3>
+              <p>+212 6 28 61 59 28</p>
+              <p>Lun-Ven: 9h - 18h</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 COLOZEN - Tous droits réservés</p>
+    </div>
+  </footer>
+
+  <script src="https://kit.fontawesome.com/1153728611.js" crossorigin="anonymous"></script>
+  <script>
+    document.querySelectorAll('.faq-question').forEach(question => {
+      question.addEventListener('click', () => {
+        const faqItem = question.parentElement;
+        faqItem.classList.toggle('active');
+        
+        const span = question.querySelector('span');
+        span.textContent = faqItem.classList.contains('active') ? '-' : '+';
+      });
+    });
+    
+    document.querySelectorAll('.sidebar a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768) {
+          const targetId = this.getAttribute('href');
+          const targetElement = document.querySelector(targetId);
+          
+          if (targetElement) {
+            e.preventDefault();
+            window.scrollTo({
+              top: targetElement.offsetTop - 100,
+              behavior: 'smooth'
+            });
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

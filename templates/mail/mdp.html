@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Réinitialisation de mot de passe</title>
+  </head>
+  <body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; color: #2C3E50;">
+    <div style="max-width: 600px; background-color: #FDFEFE; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); overflow: hidden; margin: 40px auto;">
+      <div style="background-color: #C0392B; color: #FFFFFF; padding: 20px; text-align: center;">
+        <h2 style="margin: 0;">COLOZEN</h2>
+      </div>
+
+      <div style="padding: 30px; text-align: center;">
+        <h1 style="color: #C0392B; font-size: 24px; margin-top: 0;">Réinitialisation de votre mot de passe</h1>
+        <p>Bonjour {{ user.username }},</p>
+        <p>Vous avez demandé la réinitialisation de votre mot de passe. Cliquez sur le bouton ci-dessous pour en définir un nouveau :</p>
+
+        <a href="{{url}}" style="display: inline-block; background-color: #FF6F61; color: #FFFFFF; padding: 12px 30px; text-decoration: none; border-radius: 4px; font-weight: bold; margin: 20px 0; transition: background-color 0.3s;">Réinitialiser mon mot de passe</a>
+
+        <p>Ce lien expirera dans 24 heures. Si vous n'avez pas demandé cette réinitialisation, ignorez cet email.</p>
+
+        <hr style="border-top: 1px solid #BDC3C7; margin: 25px 0;" />
+
+        <p>Si le bouton ne fonctionne pas, copiez-collez le lien suivant dans votre navigateur :</p>
+        <p style="word-break: break-all; color: #C0392B;">http://127.0.0.1:8000/app1/change_mdp_page/your_user_id</p>
+
+        <p style="font-size: 14px; color: #888; margin-top: 20px;">Besoin d’aide ? Contactez notre support à <a href="mailto:alaegtav2004@gmail.com" style="color: #C0392B;">colozen@gmail.com</a></p>
+      </div>
+
+      <div style="background-color: #f9f9f9; padding: 15px; text-align: center; font-size: 12px; color: #666; border-top: 1px solid #BDC3C7;">
+        <p>© 2025 COLOZEN . Tous droits réservés.</p>
+        <p>Emsi agdal 2 agdal, 10000 RABAT, MAROC</p>
+        <p>
+          <a href="#" style="color: #BDC3C7; margin: 0 5px; text-decoration: none;">Facebook</a> |
+          <a href="#" style="color: #BDC3C7; margin: 0 5px; text-decoration: none;">Twitter</a> |
+          <a href="#" style="color: #BDC3C7; margin: 0 5px; text-decoration: none;">LinkedIn</a> |
+          <a href="#" style="color: #BDC3C7; margin: 0 5px; text-decoration: none;">Instagram</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

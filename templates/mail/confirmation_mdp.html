@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmation du changement de mot de passe</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #FDFEFE; color: #2C3E50; margin: 0; padding: 0; line-height: 1.6;">
+    <div style="max-width: 600px; margin: 20px auto; background-color: #FFFFFF; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(44, 62, 80, 0.1);">
+        <div style="background-color: #C0392B; padding: 20px; text-align: center;">
+            <h1 style="color: #FFFFFF; margin: 10px 0 0 0; font-size: 24px;">Votre mot de passe a été modifié</h1>
+        </div>
+        
+        <div style="padding: 30px; background-color: #FFFFFF;">
+            <h2 style="color: #C0392B; margin-top: 0; font-size: 20px;">Bonjour {{ user.username }},</h2>
+            
+            <p>Nous vous confirmons que le mot de passe associé à votre compte <strong>{{ user.email }}</strong> a bien été modifié avec succès.</p>
+            
+            <div style="background-color: #FDFEFE; border-left: 4px solid #E74C3C; padding: 15px; margin: 20px 0; border-radius: 4px;">
+                <p><strong>Date de modification :</strong> {{ modif_date }}</p>
+                <p><strong>Appareil :</strong> {{ device_info }} • {{ location }}</p>
+            </div>
+            
+            <p>Si vous êtes à l'origine de cette modification, aucune action n'est requise de votre part.</p>
+            <p>En revanche, si vous n'avez pas demandé ce changement, votre compte pourrait être compromis.</p>
+            
+            <div style="background-color: rgba(189, 195, 199, 0.2); border-radius: 4px; padding: 15px; font-size: 14px; margin-top: 25px;">
+                <h3 style="color: #C0392B; margin-top: 0; font-size: 16px;">Conseil de sécurité</h3>
+                <p>Pour protéger votre compte, nous vous recommandons d'activer l'authentification à deux facteurs. Cette fonctionnalité renforce considérablement la sécurité de votre compte, même si votre mot de passe est compromis.</p>
+            </div>
+            
+            <div style="height: 1px; background-color: #BDC3C7; margin: 25px 0;"></div>
+            
+            <p>Si vous avez des questions ou besoin d'assistance, n'hésitez pas à contacter notre équipe de support à l'adresse <a href="mailto:colozen@gmail.com" style="color: #C0392B;">colozen@gmail.com</a>.</p>
+            
+            <p>Cordialement,<br>L'équipe de sécurité</p>
+        </div>
+        
+        <div style="background-color: #BDC3C7; color: #2C3E50; text-align: center; padding: 15px; font-size: 12px;">
+            <div style="margin: 15px 0;">
+                <a href="#" style="display: inline-block; margin: 0 8px; color: #2C3E50; text-decoration: none;">Facebook</a> • 
+                <a href="#" style="display: inline-block; margin: 0 8px; color: #2C3E50; text-decoration: none;">Twitter</a> • 
+                <a href="#" style="display: inline-block; margin: 0 8px; color: #2C3E50; text-decoration: none;">Instagram</a> • 
+                <a href="#" style="display: inline-block; margin: 0 8px; color: #2C3E50; text-decoration: none;">LinkedIn</a>
+            </div>
+            <p>© 2025 COLOZEN. Tous droits réservés.</p>
+            <p>Emsi agdal 2 Rabat, 10000 Rabat, Maroc</p>
+            <p><a href="#" style="color: #2C3E50; text-decoration: none;">Politique de confidentialité</a> | <a href="#" style="color: #2C3E50; text-decoration: none;">Se désabonner</a></p>
+        </div>
+    </div>
+</body>
+</html>

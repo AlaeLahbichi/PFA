@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "css/private/vos.css" %}">
+    <link rel="stylesheet" href="{% static "css/main/main.css" %}">
+    <title>Mes Candidatures de Location</title>
+</head>
+<body>
+    {% include "../layouts/nav.html" %}
+    <header>
+        <h1>Mes Candidatures de Location</h1>
+    </header>
+
+    <div class="container">
+        <div class="dashboard">
+            <div class="stats">
+                <div class="stat-card">
+                    <h3>Candidatures en attente</h3>
+                    <div class="stat-value">{{pending}}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Candidatures acceptées</h3>
+                    <div class="stat-value">{{accept}}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Candidatures refusées</h3>
+                    <div class="stat-value">{{refuse}}</div>
+                </div>
+            </div>
+
+            <form class="filter-bar" method="POST" action="{% url "vos_candidature_filter" %}">
+                {% csrf_token %}
+                <input type="text" class="adresse" placeholder="Rechercher une adresse...">
+                <select name="status">
+                    <option value="default">Tous les statuts</option>
+                    <option value="EN ATTENTE">En attente</option>
+                    <option value="APPROUVÉE">Acceptée</option>
+                    <option value="REFUSÉE">Refusée</option>
+                </select>
+                <button type="submit">Filtrer</button>
+            </form>
+
+            <div class="applications">
+                {% for cand in candidatures  %}
+                <div class="application-card">
+                    <div class="application-status {% if cand.status == "EN ATTENTE" %}status-pending{% elif cand.status == "APPROUVÉE" %}status-accepted{% else %}status-rejected{% endif %} ">{{cand.status}}</div>
+                    {% with cand.offre.photos.all.0 as photo %}
+                        {% if photo %}
+                            <img src="{{ photo.image.url }}" alt="Appartement" class="application-image">
+                        {% endif %}
+                    {% endwith %}
+                    <div class="application-details">
+                        <h3 class="application-title">{{cand.offre.house.title}}</h3>
+                        <div class="application-price">{{cand.offre.rent}} MAD /mois</div>
+                        <div class="application-info">
+                            <span class="info-item">{{cand.offre.house.surface}}m²</span>
+                            <span class="info-item">{{cand.offre.house.rooms}} pièces</span>
+                            <span class="info-item">{{cand.offre.house.bedrooms}} chambre</span>
+                            <span class="info-item">{{cand.offre.nombre_personne}} personnes</span>
+                        </div>
+                        <div class="application-date">Candidature envoyée le {{cand.created_at}}</div>
+                    </div>
+                    <div class="application-actions">
+                        <button><a href="{% url "annonce_page" cand.offre.id %}" style="text-decoration:none;color:black;">Voir détails</a></button>
+                        <button><a href="{% url "specificmessages" cand.owner.id %}" style="text-decoration:none;color:black;">Contacter</a></button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script src="{% static "js/private/cand.js" %}"></script>
+    {% include "../layouts/footer.html" %}
+    {% include "../layouts/erreur.html" %}
+</body>
+</html>

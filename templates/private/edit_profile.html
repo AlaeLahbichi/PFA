@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier les données personnelles</title>
+    <style>
+        :root {
+            --color-primary: #C0392B;       
+            --color-accent: #E74C3C;        
+            --color-background: #FDFEFE;    
+            --color-text: #2C3E50;          
+            --color-cta: #FF6F61;           
+            --color-secondary: #BDC3C7;     
+            --color-white: #FFFFFF;
+            --color-border: #BDC3C7;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--color-background);
+            color: var(--color-text);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--color-white);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        h1 {
+            color: var(--color-primary);
+            margin-bottom: 10px;
+        }
+
+        .description {
+            color: var(--color-text);
+            margin-bottom: 20px;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            background-color: var(--color-secondary);
+            color: var(--color-white);
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            gap: 20px;
+        }
+
+        .form-group {
+            flex: 1 1 300px;
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--color-text);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .form-check input {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .photo-upload {
+            border: 2px dashed var(--color-border);
+            padding: 30px;
+            text-align: center;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .photo-upload i {
+            font-size: 30px;
+            color: var(--color-secondary);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .photo-upload input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .image-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid var(--color-border);
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--color-cta);
+            color: var(--color-white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-accent);
+        }
+
+        .btn-secondary {
+            background-color: var(--color-secondary);
+            color: var(--color-white);
+        }
+
+        .btn-secondary:hover {
+            background-color: #95a5a6;
+        }
+
+        .price-input {
+            position: relative;
+        }
+
+        .price-input input {
+            padding-right: 30px;
+        }
+
+        .price-input::after {
+            content: "€";
+            position: absolute;
+            right: 10px;
+            top: 32px;
+            color: var(--color-text);
+        }
+
+        .info-text {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .upload-progress {
+            height: 8px;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+            margin-top: 10px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .upload-progress-bar {
+            height: 100%;
+            background-color: var(--color-primary);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .error-message {
+            color: var(--color-accent);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .form-group {
+                flex: 1 1 100%;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1> {% if request.user.activation %}Modifier les données personnelles{% else %}Compléter l'inscription{% endif %}</h1>
+            {% if not request.user.activation %}<p class="description">Remplissez les champs suivants pour compléter votre inscription et activer votre compte</p>{% endif %}
+        </header>
+
+        <form action="{% url "editprofile" request.user.username %}" id="locationForm" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-section">
+                <h2 class="section-title">Informations Personnelles</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="surface">Username</label>
+                        {{form.username}}
+                    </div>
+                    <div class="form-group">
+                        <label for="rooms">Email</label>
+                        {{form.email}}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="propertyType">First Name</label>
+                        {{form.first_name}}
+                    </div>
+                    <div class="form-group">
+                        <label for="furnished">Last Name</label>
+                        {{form.last_name}}
+                    </div>
+                    <div class="form-group">
+                        <label for="phone_number">Numéro de télèphone</label>
+                        {{form.phone_number}}
+                    </div>
+                    <div class="form-group">
+                        <label for="date_naissance">Date Naissance</label>
+                        {{form.date_naissance}}
+                    </div>
+                    <div class="form-group">
+                        <label for="genre">Genre</label>
+                        {{form.genre}}
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        {{form.status}}
+                    </div>
+                    {% if request.user.status == "Étudiant" %}
+                    <div class="form-group">
+                        <label for="universite">Université</label>
+                        <input type="text" name="universite" id="universite">
+                    </div>
+                    <div class="form-group">
+                        <label for="universite">Niveau scolaire</label>
+                        <select name="niveau_scolaire" id="niveau_scolaire">
+                            <option value="Licence">Licence</option>
+                            <option value="Master">Master</option>
+                            <option value="Docotorat">Doctorat</option>
+                        </select>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% if request.user.status == "Étudiant" %}
+            <div class="form-section">
+                <h2 class="section-title">Informations financières</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="bourse">Bourse</label>
+                        <select name="bourse" id="bourse">
+                            <option value="Boursier" {% if request.user.etudiant.bourse %}selected{% endif %}>Boursier</option>
+                            <option value="Non-boursier" {% if not request.user.etudiant.bourse %}selected{% endif %}>Non-boursier</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="montant_bourse">Montant de la bourse</label>
+                        <input type="number" name="montant_bourse" id="montant_bourse" value={{request.user.etudiant.montant_bourse}}>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="job-etudiant">Job etudiant</label>
+                        <select name="job_etudiant" id="job_etudiant">
+                            <option value="Employé" {% if request.user.etudiant.job_etudiant %}selected{% endif %}>Employé</option>
+                            <option value="Sans_emploi" {% if not request.user.etudiant.job_etudiant %}selected{% endif %}>Sans emploi</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="job_etudiant_name">Job etudiant name</label>
+                        <input type="text" name="job_etudiant_name" id="job_etudiant_name" value={{request.user.etudiant.job_etudiant_name}} >
+                    </div>
+                    <div class="form-group">
+                        <label for="montant_bourse">Revenu du job etudiant</label>
+                        <input type="number" name="job_etudiant_revenu" id="job_etudiant_revenu" value={{request.user.etudiant.job_etudiant_revenu}}>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="location_name">Revenu mensuel</label>
+                        <input type="number" name="revenu_mensuel" id="revenu_mensuel" value={{request.user.etudiant.revenu_mensuel_total}}>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            <div class="form-section">
+                <h2 class="section-title">Localisation</h2>
+                <div class="form-group">
+                    <label for="bedrooms">Pays</label>
+                    {{form.pays}}
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="address">Adresse</label>
+                        {{form.adress}}
+                    </div>
+                    <div class="form-group">
+                        <label for="city">Ville</label>
+                        {{form.ville}}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="location_name">Code postal</label>
+                        {{form.code_postal}}
+                    </div>
+                </div>
+            </div>
+            <div class="buttons">
+                <button type="submit" class="btn btn-primary">Confirmer</button>
+                <a href="{% url "homepage" %}" style="text-decoration:none;" type="button" class="btn btn-secondary">Annuler la modification</a>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vérification réussie</title>
+    <style>
+        :root {
+            --color-primary: #C0392B;       
+            --color-accent: #E74C3C;        
+            --color-background: #FDFEFE;    
+            --color-text: #2C3E50;          
+            --color-cta: #FF6F61;           
+            --color-secondary: #BDC3C7;     
+            --color-white: #FFFFFF;
+            --color-border: #BDC3C7;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--color-background);
+            color: var(--color-text);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            padding: 30px;
+            background-color: var(--color-white);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border-top: 5px solid var(--color-primary);
+        }
+
+        .icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background-color: var(--color-primary);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--color-white);
+            font-size: 40px;
+        }
+
+        h1 {
+            color: var(--color-primary);
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: var(--color-cta);
+            color: var(--color-white);
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: var(--color-accent);
+        }
+
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--color-border);
+            font-size: 14px;
+            color: var(--color-secondary);
+        }
+
+        .social-links {
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            background-color: var(--color-secondary);
+            border-radius: 50%;
+            color: var(--color-white);
+            line-height: 36px;
+            margin: 0 5px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">✓</div>
+        <h1>Votre email a été vérifié avec succès !</h1>
+        <p>Merci d'avoir confirmé votre adresse email. Votre compte est maintenant activé et vous pouvez accéder à toutes les fonctionnalités de notre plateforme.</p>
+        <a href="{% url "login" %}" class="button">Accéder à mon compte</a>
+        <p>Si vous avez des questions ou besoin d'aide, n'hésitez pas à contacter notre équipe de support.</p>
+        <div class="footer">
+            <p>© 2025 Votre Entreprise. Tous droits réservés.</p>
+            <div class="social-links">
+                <a href="#">f</a>
+                <a href="#">t</a>
+                <a href="#">in</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

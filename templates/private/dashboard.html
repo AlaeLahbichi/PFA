@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "css/home/home.css" %}">
+    <link rel="stylesheet" href="{% static "css/private/dashboard/dashboard.css" %}">
+    <title>Dashboard d'Administration</title>
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="logo-block">
+                <div class="logo">Admin</div>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                        <div class="nav-icon">📊</div>
+                        <span class="nav-text">Tableau de bord</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <div class="nav-icon">👤</div>
+                        <span class="nav-text">Utilisateurs</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <div class="nav-icon">📝</div>
+                        <span class="nav-text">Offres</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url "homepage" %}" style="text-decoration:none;" class="nav-link">
+                        <div class="nav-icon">🏠</div>
+                        <span class="nav-text">Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url "logout" %}" class="nav-link">
+                        <div class="nav-icon">🔌</div>
+                        <span class="nav-text">Déconnexion</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="header-bar">
+                <div class="header-title">Tableau de bord</div>
+                <div class="header-actions">
+                    <div class="notifications-icon">
+                        🔔
+                        {% if order_attente %}
+                            <div class="notifications-badge">{{order_attente}}</div>
+                        {% endif %}
+                    </div>
+                    <div class="user-profile">
+                        <div class="avatar">{{request.user.first_name|slice:":1"}}{{request.user.last_name|slice:":1"}}</div>
+                        <div class="username">{{request.user.status}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">Utilisateurs</div>
+                        <div class="stat-icon stat-users">👤</div>
+                    </div>
+                    <div class="stat-value">{{user_count}}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">Offres</div>
+                        <div class="stat-icon stat-offers">📝</div>
+                    </div>
+                    <div class="stat-value">{{offer_count}}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">Propriétés</div>
+                        <div class="stat-icon stat-properties">🏠</div>
+                    </div>
+                    <div class="stat-value">{{house_count}}</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <div class="table-title">Utilisateurs</div>
+                </div>
+                <div class="table-responsive" style="max-height: 50vh;overflow-y: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Utilisateur</th>
+                                <th>Date d'inscription</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for x in users  %}
+                            <tr>
+                                <td>
+                                    <div class="user-cell">
+                                        <div class="user-avatar">{{x.first_name|slice:":1"}}{{x.last_name|slice:":1"}}</div>
+                                        <div class="user-details">
+                                            <div class="user-name">{{x.first_name}} {{x.last_name}}</div>
+                                            <div class="user-email">{{x.email}}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{{x.date_created}}</td>
+                                <td>
+                                    {% if x.activation %}
+                                        <span class="status-badge status-active">Actif</span></td>
+                                    {% else %}
+                                        <span class="status-badge status-active" style="background-color:#7F8C8D">Inactif</span></td>
+                                    {% endif %}
+                                <td>
+                                    <div class="action-icons">
+                                        <a style="text-decoration:none;"  href="{% url "supprimer_user" x.id %}" class="action-icon">🗑️</a>
+                                        {% if not x.activation %}
+                                            <a href="{% url "activate_user" x.id %}" style="text-decoration:none;" class="action-icon">✅</a>
+                                        {% endif %}
+                                        <a href="{% url "other_profile" x.id %}" style="text-decoration:none;">📄</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <div class="table-title">Offres</div>
+                </div>
+                <div class="table-responsive" style="max-height: 50vh;overflow-y: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Propriété</th>
+                                <th>Propriétère</th>
+                                <th>Montant</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for offre in offres  %}
+                            <tr>
+                                <td>Villa à {{offre.city.name}}</td>
+                                <td>
+                                    <div class="user-cell">
+                                        <div class="user-avatar">{{offre.owner.first_name|slice:":1"|upper}}{{offre.owner.last_name|slice:":1"|upper}}</div>
+                                        <div class="user-details">
+                                            <div class="user-name">{{offre.owner.first_name}} {{offre.owner.last_name}}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>MAD {{offre.rent}} / mois</td>
+                                <td>{{offre.created_at}}</td>
+                                <td><span class="status-badge {% if offre.status == "Disponible" %}status-approved{% elif offre.status == "Refusé" %}status-rejected{% else %}status-pending{% endif %}">{{offre.status}}</span></td>
+                                <td>
+                                    {% if offre.status == "En attente"  %}
+                                    <div class="table-actions">
+                                        <a href="{% url "annonceaccepter" offre.id %}" style="text-decoration:none;" class="action-btn btn-success">✅</a>
+                                        <a href="{% url "annoncerefuser" offre.id %}" style="text-decoration:none;" class="action-btn btn-danger">❌</a>
+                                    </div>
+                                    {% else %}
+                                        <div class="action-icons">
+                                            <a style="text-decoration:none;"  href="{% url "supprimer_annonce_admin" offre.id %}" class="action-icon">🗑️</a>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% include "../layouts/erreur.html" %}

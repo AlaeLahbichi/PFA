@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "css/main/main.css" %}">
+    <link rel="stylesheet" href="{% static "css/private/modifier_annonce.css" %}">
+    <title>Modifier l'Offre de Colocation</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header animation-fade-in">
+            <h1>🏠 Modifier l'Annonce de Colocation</h1>
+            <p>Mettez à jour les informations de votre offre de colocation</p>
+        </div>
+
+        <div class="form-container animation-fade-in">
+            <form id="colocationForm" action="{% url "modifier_annonce_action" annonce.id %}"  method="POST">
+                {% csrf_token %}
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <span class="section-icon">📋</span>
+                        Informations Générales
+                    </h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="title">Titre de l'annonce *</label>
+                            <input type="text" id="title" name="title" class="form-control" placeholder="Ex: Belle chambre dans colocation moderne" value="{{annonce.house.title}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Statut de l'offre</label>
+                            <select id="status" name="status" class="form-control"  >
+                                <option value="En attente" {% if annonce.status == "En attente" %}selected{% endif %}>En attente</option>
+                                <option value="Disponible" {% if annonce.status == "Disponible" %}selected{% endif %}>Disponible</option>
+                                <option value="Refusé" {% if annonce.status == "Refusé" %}selected{% endif %}>Refusé</option>
+                                <option value="Fini" {% if annonce.status == "Fini" %}selected{% endif %}>Fini</option>
+                            </select>
+                            <div id="statusIndicator" class="status-indicator status-attente">
+                                <span>🔄</span> En attente
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" name="description" class="form-control" placeholder="Décrivez votre logement et ce que vous recherchez chez un colocataire...">{{annonce.house.description}}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <span class="section-icon">🏡</span>
+                        Détails du Logement
+                    </h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="property_type">Type de bien</label>
+                            <select id="property_type" name="property_type" class="form-control">
+                                <option value="Appartement" {% if annonce.house.property_type == "Appartement" %}selected{% endif %}>Appartement</option>
+                                <option value="Maison" {% if annonce.house.property_type == "Maison" %}selected{% endif %}>Maison</option>
+                                <option value="Studio" {% if annonce.house.property_type == "Studio" %}selected{% endif %}>Studio</option>
+                                <option value="Loft" {% if annonce.house.property_type == "Loft" %}selected{% endif %}>Loft</option>
+                                <option value="Chambre" {% if annonce.house.property_type == "Chambre" %}selected{% endif %}>Chambre</option>
+                                <option value="Autre" {% if annonce.house.property_type == Autre %}selected{% endif %}>Autre</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="furnished">Ameublement</label>
+                            <select id="furnished" name="furnished" class="form-control">
+                                <option value="Meublé" {% if annonce.house.furnished == "Meublé" %}selected{% endif %}>Meublé</option>
+                                <option value="Non meublé" {% if annonce.house.furnished == "Non meublé" %}selected{% endif %}>Non meublé</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="surface">Surface (m²)</label>
+                            <input type="number" id="surface" name="surface" class="form-control" min="1" placeholder="50" value="{{annonce.house.surface}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="rooms">Nombre de pièces</label>
+                            <input type="number" id="rooms" name="rooms" class="form-control" min="1" placeholder="3" value="{{annonce.house.rooms}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="bedrooms">Nombre de chambres</label>
+                            <input type="number" id="bedrooms" name="bedrooms" class="form-control" min="1" placeholder="2" value="{{annonce.house.bedrooms}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="nombre_personne">Nombre de colocataires recherchés</label>
+                            <input type="number" id="nombre_personne" name="nombre_personne" class="form-control" min="1" value="{{annonce.nombre_personne}}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section Localisation -->
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <span class="section-icon">📍</span>
+                        Localisation
+                    </h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="address">Adresse</label>
+                            <input type="text" id="address" name="address" class="form-control" placeholder="123 Rue de la Paix" value="{{annonce.house.address}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="city">Ville</label>
+                            <input type="text" id="city" name="city" class="form-control" placeholder="Paris" readonly value="{{annonce.house.city}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="code_postal">Code postal</label>
+                            <input type="number" id="code_postal" name="code_postal" class="form-control" placeholder="75001" value="{{annonce.house.code_postal}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="region">Région</label>
+                            <input type="text" id="region" name="region" class="form-control" placeholder="Île-de-France" value="{{annonce.house.region}}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section Prix -->
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <span class="section-icon">💰</span>
+                        Tarification
+                    </h2>
+                    <div class="price-group">
+                        <div class="form-group">
+                            <label for="rent">Loyer mensuel *</label>
+                            <div class="currency-input">
+                                <input type="number" id="rent" name="rent" class="form-control" min="0" step="0.01" placeholder="500" value="{{annonce.rent}}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="charges">Charges mensuelles *</label>
+                            <div class="currency-input">
+                                <input type="number" id="charges" name="charges" class="form-control" min="0" step="0.01" placeholder="100" value="{{annonce.charges}}" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section Équipements -->
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <span class="section-icon">⚡</span>
+                        Équipements et Services
+                    </h2>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="parking" name="parking" {% if annonce.house.parking %}checked{% endif %}>
+                            <label for="parking">🚗 Parking</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="elevator" name="elevator" {% if annonce.house.elevator %}checked{% endif %}>
+                            <label for="elevator">🛗 Ascenseur</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="balcony" name="balcony" {% if annonce.house.balcony %}checked{% endif %}>
+                            <label for="balcony">🌿 Balcon/Terrasse</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="heating" name="heating" {% if annonce.house.heating %}checked{% endif %}>
+                            <label for="heating">🔥 Chauffage</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="ac" name="ac" {% if annonce.house.ac %} checked{% endif %}>
+                            <label for="ac">❄️ Climatisation</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="garden" name="garden" {% if annonce.house.garden %}checked{% endif %}>
+                            <label for="garden">🌳 Jardin</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <span class="section-icon">✅</span>
+                        Validation
+                    </h2>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="autorisation" name="autorisation">
+                        <label for="autorisation">J'autorise la modification de cette annonce</label>
+                    </div>
+                </div>
+
+
+                <div class="action-buttons">
+                    <a href="{% url "mes_annonces" %}" style="text-decoration:none;"><button type="button" class="btn btn-secondary" onclick="">
+                        ❌ Annuler
+                    </button></a>
+                    <a href="{% url "supprimer_annonce" id %}" style="text-decoration:none;">
+                    <button type="button" class="btn btn-cta">
+                        👁️ Supprimer l'annonce
+                    </button>
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        💾 Enregistrer les modifications
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% include "../layouts/erreur.html" %}
+<script>
+
+    const statusConfig = {
+        'Disponible': { icon: '✅', class: 'status-disponible', text: 'Disponible' },
+        'En attente': { icon: '🔄', class: 'status-attente', text: 'En attente' },
+        'Refusé': { icon: '❌', class: 'status-refuse', text: 'Refusé' },
+        'Fini': { icon: '🏁', class: 'status-fini', text: 'Fini' }
+    };
+
+    const statusSelect = document.getElementById('status');
+    const statusIndicator = document.getElementById('statusIndicator');
+
+    statusSelect.addEventListener('change', function () {
+        const status = this.value;
+        const config = statusConfig[status];
+        if (config) {
+            statusIndicator.className = `status-indicator ${config.class}`;
+            statusIndicator.innerHTML = `<span>${config.icon}</span> ${config.text}`;
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const elements = document.querySelectorAll('.animation-fade-in');
+        elements.forEach((el, index) => {
+            setTimeout(() => {
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+            }, index * 200);
+        });
+
+        const currentStatus = statusSelect.value;
+        const config = statusConfig[currentStatus];
+        if (config) {
+            statusIndicator.className = `status-indicator ${config.class}`;
+            statusIndicator.innerHTML = `<span>${config.icon}</span> ${config.text}`;
+        }
+    });
+</script>
+
+</body>
+</html>

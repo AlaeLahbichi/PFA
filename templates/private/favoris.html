@@ -1,0 +1,362 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "css/main/main.css" %}">
+    <title>Mes offres Favorises</title>
+    <style>
+        :root {
+            --color-primary: #C0392B;       
+            --color-accent: #E74C3C;        
+            --color-background: #FDFEFE;    
+            --color-text: #2C3E50;          
+            --color-cta: #FF6F61;           
+            --color-secondary: #BDC3C7;     
+            --color-white: #FFFFFF;
+            --color-border: #BDC3C7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--color-background);
+            color: var(--color-text);
+            padding: 20px;
+            position:relative;
+        }
+
+        .back {
+            position:fixed;
+            top:3%;
+            left:2%;
+            text-decoration:none;
+            color:#C0392B;
+            font-size:1.5rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--color-primary);
+            margin-bottom: 10px;
+        }
+
+        .search-container {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .search-container input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid var(--color-border);
+            border-radius: 4px 0 0 4px;
+            font-size: 16px;
+        }
+
+        .search-container button {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .search-container button:hover {
+            background-color: var(--color-accent);
+        }
+
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: var(--color-secondary);
+            color: var(--color-text);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+        }
+
+        .filter-btn:hover {
+            background-color: var(--color-accent);
+            color: var(--color-white);
+        }
+
+        .favorites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .location-box {
+            background-color: var(--color-white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .location-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .location-image {
+            height: 180px;
+            background-color: var(--color-secondary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .location-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .favorite-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--color-white);
+            color: var(--color-primary);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .location-details {
+            padding: 15px;
+        }
+
+        .location-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--color-text);
+        }
+
+        .location-address {
+            font-size: 14px;
+            color: #636e72;
+            margin-bottom: 12px;
+        }
+
+        .location-features {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .feature-tag {
+            background-color: #f1f1f1;
+            color: var(--color-text);
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .location-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .action-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        .view-btn {
+            background-color: var(--color-cta);
+            color: var(--color-white);
+        }
+
+        .view-btn:hover {
+            background-color: #e74c3c;
+        }
+
+        .share-btn {
+            background-color: var(--color-secondary);
+            color: var(--color-text);
+        }
+
+        .share-btn:hover {
+            background-color: #a6a6a6;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            background-color: var(--color-white);
+            border-radius: 8px;
+            margin: 0 auto;
+            max-width: 600px;
+        }
+
+        .empty-state p {
+            margin-bottom: 20px;
+            color: #636e72;
+        }
+
+        .add-favorite-btn {
+            background-color: var(--color-cta);
+            color: var(--color-white);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .add-favorite-btn:hover {
+            background-color: var(--color-accent);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 5px;
+        }
+
+        .pagination-btn {
+            background-color: var(--color-white);
+            border: 1px solid var(--color-border);
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pagination-btn.active {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            border-color: var(--color-primary);
+        }
+
+        .pagination-btn:hover:not(.active) {
+            background-color: var(--color-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .favorites-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .favorites-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-container {
+                flex-direction: column;
+            }
+            
+            .search-container input,
+            .search-container button {
+                width: 100%;
+                border-radius: 4px;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+    {% include "../layouts/nav.html" %}
+
+    <header>
+        <h1>Mes offres Favorises</h1>
+        <p>Retrouvez tous vos offres préférées en un seul endroit</p>
+    </header>
+
+    <div class="search-container">
+        <input type="text" class="search" placeholder="Rechercher un emplacement...">
+        <button>
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+            </svg>
+        </button>
+    </div>
+
+    <div class="favorites-grid" style="margin-top:4rem;">
+        {% for item in offer  %}
+            <div class="location-box">
+                <div class="location-image">
+                    <img src="{{item.offer.photos.first.image.url}}" alt="La photo principale de l'offre">
+                    <a href="{% url "favoriteoffer" item.offer.id request.user.username %}">
+                        <button class="favorite-btn">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                            </svg>
+                        </button>
+                    </a>
+                </div>
+                <div class="location-details">
+                    <h3 class="location-name">{{item.offer.house.location_name}}</h3>
+                    <p class="location-address">{{item.offer.house.adress}}</p>
+                    <div class="location-features">
+                        {% if item.offer.house.garden %}<span class="feature-tag">Garden</span>{% endif %}
+                        {% if item.offer.house.parking %}<span class="feature-tag">Parking</span>{% endif %}
+                        {% if item.offer.house.elevator %}<span class="feature-tag">Elevator</span>{% endif %}
+                        {% if item.offer.house.balcony %}<span class="feature-tag">Balcony</span>{% endif %}
+                        {% if item.offer.house.heating %}<span class="feature-tag">Heating</span>{% endif %}
+                        {% if item.offer.house.ac %}<span class="feature-tag">AC</span>{% endif %}
+                        <span class="feature-tag">Wi-Fi</span>
+                    </div>
+                    <div class="location-actions">
+                        <a href="{% url "annonce_page" item.offer.id %}"><button class="action-btn view-btn">Voir détails</button></a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <script src="https://kit.fontawesome.com/1153728611.js" crossorigin="anonymous"></script>
+    <script src="{% static "js/private/index.js" %}"></script>
+    {% include "../layouts/erreur.html" %}
+</body>
+</html>

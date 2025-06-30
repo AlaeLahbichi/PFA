@@ -1,0 +1,48 @@
+{% load static %}
+<link rel="stylesheet" href="{% static "css/main/main.css" %}">
+<link rel="stylesheet" href="{% static "css/layouts/footer.css" %}">
+
+<footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>À propos</h3>
+        <p style="text-align:justify;">Notre entreprise propose des solutions innovantes afin de faciliter la vie des étudiants depuis 2025. Nous nous engageons à offrir un service de qualité supérieure à tous nos clients.</p>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Liens rapides</h3>
+        <ul>
+          <li><a href="{% url "homepage" %}">Accueil</a></li>
+          <li><a href="{% url "centre_aide" %}">Centre aide</a></li>
+          <li><a href="{% url "contact_page" %}">Contact</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <ul class="contact-info">
+          <li>Email: colozen@gmail.com</li>
+          <li>Téléphone: +212 6 28 61 59 28</li>
+          <li>Adresse: Emsi agdal 2 Agdal, Rabat</li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Suivez-nous</h3>
+        <div class="social-links">
+          <a href="#" class="social-icon">Facebook</a>
+          <a href="#" class="social-icon">Twitter</a>
+          <a href="#" class="social-icon">Instagram</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; 2025 COLOZEN . Tous droits réservés.</p>
+      <div class="footer-links">
+        <a href="#">Politique de confidentialité</a>
+        <a href="#">Conditions d'utilisation</a>
+        <a href="#">Mentions légales</a>
+      </div>
+    </div>
+  </footer>

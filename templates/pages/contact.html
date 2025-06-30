@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "css/main/main.css" %}">
+    <link rel="stylesheet" href="{% static "css/pages/contact.css" %}">
+    <title>Contact - Colozen</title>
+</head>
+<body>
+
+    {% include "../layouts/nav.html" %}
+
+    <div class="container">
+        <div class="contact-section">
+            <div class="contact-info">
+                <h1>Nous contacter</h1>
+                <p>Nous sommes à votre écoute pour toute demande d'information. N'hésitez pas à nous contacter par téléphone, email ou en remplissant le formulaire ci-contre.</p>
+                
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <h3>Adresse</h3>
+                        <p>Emsi agdal 2 Agdal<br>11000 RABAT, MAROC</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <h3>Téléphone</h3>
+                        <p>+212 6 28 61 59 28</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <h3>Email</h3>
+                        <p>colozen@gmail.com</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <h3>Horaires</h3>
+                        <p>Lundi - Vendredi: 9h - 19h</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact-form">
+                <h2>Envoyez-nous un message</h2>
+                <div class="success-message" id="success-message">
+                    Merci pour votre message ! Nous vous répondrons dans les plus brefs délais.
+                </div>
+                <form id="contactForm" method="post" action="{% url "contact_action" %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name">Nom <span class="required">*</span></label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Téléphone</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Sujet <span class="required">*</span></label>
+                        <select id="subject" name="subject" required>
+                            <option value="">Choisissez un sujet</option>
+                            <option value="information">Demande d'informations</option>
+                            <option value="signaler">Signaler un abus</option>
+                            <option value="support">Support technique</option>
+                            <option value="partnership">Partenariat</option>
+                            <option value="other">Autre</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message <span class="required">*</span></label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Envoyer le message</button>
+                </form>
+            </div>
+        </div>
+</div> 
+<footer>
+        <div class="container">
+            <p>&copy; 2025 Colozen. Tous droits réservés.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+</footer>
+{% include "../layouts/erreur.html" %}
+</body>
+</html>

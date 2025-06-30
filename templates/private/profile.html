@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "css/private/profile.css" %}">
+    <link rel="stylesheet" href="{% static "css/main/main.css" %}">
+    <title>Informations du Compte</title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">MonCompte</div>
+            <div class="header-actions">
+                {% if not request.user.activation %}
+                    <a href="{% url "editprofile" request.user.username %}"><button>Compléter l'inscription</button></a>
+                {% else %}
+                    <a href="{% url "editprofile" request.user.username %}"><button>Modifier</button></a>
+                {% endif %}
+                <a href="{% url "prendrephoto" request.user.username %}"><button class="secondary">Changer photo</button></a>
+                <a href="{% url "logout" %}"><button>Déconnexion</button></a>
+            </div>
+        </header>
+        <div class="lien">
+            <a href="{% url "homepage" %}">Home</a><p>&gt;</p><a href="{% url "profilepage" request.user.username %}">Profile</a>
+        </div>
+        <h1 class="page-title">Informations du Compte</h1>
+
+        <div class="account-container">
+            <div class="sidebar">
+                <div class="user-info">
+                    <img src="{{request.user.ProfileImage.url}}" alt="Photo de profil" class="user-avatar">
+                    <div class="user-name">{{request.user.username}}</div>
+                    <div class="user-email">{{request.user.email}}</div>
+                    <div class="status-badge" style="background-color:{% if request.user.activation %}#27AE60{% else %}#7F8C8D{% endif %}">Compte {% if request.user.activation %}Actif{% else %}Inactif{% endif %}</div>
+                </div>
+
+                <ul class="menu-list">
+                    <li class="menu-item">
+                        <a href="#" class="active">
+                            <i>👤</i> Mon Profil
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="content">
+                <h2 class="content-title">Informations Personnelles</h2>
+                <div class="info-sections">
+                    <div class="info-section">
+                        <h3 class="section-title">Détails du Profil</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-label">Nom Complet</div>
+                                <div class="info-value">{{request.user.first_name}} {{request.user.last_name}}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Date de Naissance</div>
+                                <div class="info-value">{{request.user.date_naissance}}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Email</div>
+                                <div class="info-value">{{request.user.email}}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Téléphone</div>
+                                <div class="info-value">{{request.user.phone_number}}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Pays</div>
+                                <div class="info-value">{{request.user.pays.name}}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Status</div>
+                                <div class="info-value">{{request.user.status}}</div>
+                            </div>
+                            {% if request.user.status == "Étudiant" %}
+                                <div class="info-item">
+                                    <div class="info-label">Université</div>
+                                    <div class="info-value">{{request.user.etudiant.universite}}</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Niveau scolaire</div>
+                                    <div class="info-value">{{request.user.etudiant.niveau_scolaire}}</div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% if request.user.status == "Étudiant" %}
+                    <div class="info-section">
+                        <h3 class="section-title">Informations financières</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-label">Bourse</div>
+                                <div class="info-value">{% if request.user.etudiant.bourse %}Boursier{% else %}Non-boursier{% endif %}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Montant de la bourse</div>
+                                <div class="info-value">{{request.user.etudiant.montant_bourse}}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Job etudiant</div>
+                                <div class="info-value">{% if request.user.etudiant.job_etudiant %}{{request.user.etudiant.job_etudiant_name}}{% else %}Aucun job etudiant{% endif %}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Job etudiant revenu</div>
+                                <div class="info-value">{{request.user.etudiant.job_etudiant_revenu}}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Revenu mensuel</div>
+                                <div class="info-value">{{request.user.etudiant.revenu_mensuel_total}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="info-section">
+                        <h3 class="section-title">Adresse de facturation</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-label">Rue</div>
+                                <div class="info-value">{{request.user.adress}}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Ville</div>
+                                <div class="info-value">{{request.user.ville}}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Code Postal</div>
+                                <div class="info-value">{{request.user.code_postal}}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Pays</div>
+                                <div class="info-value">{{request.user.pays.name}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-section" id="password-section">
+                        <h3 class="section-title">Modifier le mot de passe</h3>
+                        <form method="post" class="password-change-form" action="{% url "changepassword" request.user.username %}">
+                            {% csrf_token %}
+                            <input type="password" name="password" id="password" placeholder="Saisir l'ancien password ">
+                            <input type="password" name="password_new" id="password" placeholder="Saisir le nouveau mot de passe ">
+                            <button type="submit">Modifier le mot de passe</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button>Supprimer le compte</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    {% include "../layouts/erreur.html" %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuItems = document.querySelectorAll('.menu-item a');
+            
+            menuItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    menuItems.forEach(i => i.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

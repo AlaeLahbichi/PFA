@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "css/main/main.css" %}">
+    <title>Création de Nouveau Mot de Passe</title>
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --light-color: #f5f5f5;
+            --dark-color: #333;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--dark-color);
+        }
+        
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header h1 {
+            color: #e74c3c;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            color: #666;
+            margin-top: 0;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .password-container {
+            position: relative;
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        .password-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+            user-select: none;
+        }
+        
+        .strength-meter {
+            height: 8px;
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 4px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        
+        .strength-meter-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 4px;
+            transition: width 0.3s ease, background-color 0.3s ease;
+        }
+        
+        .password-feedback {
+            margin-top: 12px;
+            font-size: 14px;
+        }
+        
+        .requirements-list {
+            margin-top: 12px;
+            padding-left: 0;
+        }
+        
+        .requirement-item {
+            list-style-type: none;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .requirement-item:before {
+            content: "";
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            border-radius: 50%;
+            background-color: #ddd;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 10px;
+            transition: all 0.2s ease;
+        }
+        
+        .requirement-item.valid:before {
+            background-color: var(--success-color);
+            content: "✓";
+            color: white;
+            text-align: center;
+            font-size: 12px;
+            line-height: 16px;
+        }
+        
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            background-color: #3252d2;
+        }
+        
+        .submit-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .very-weak { background-color: var(--danger-color); }
+        .weak { background-color: #ff7043; }
+        .medium { background-color: var(--warning-color); }
+        .strong { background-color: #7cb342; }
+        .very-strong { background-color: var(--success-color); }
+        
+        .text-danger { color: var(--danger-color); }
+        .text-warning { color: var(--warning-color); }
+        .text-success { color: var(--success-color); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Créer un nouveau mot de passe</h1>
+            <p>Choisissez un mot de passe fort pour sécuriser votre compte</p>
+        </div>
+        
+        <form id="password-form" method="POST" action="{% url "change_mdp_action" user.id %}" >
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="new-password">Nouveau mot de passe</label>
+                <div class="password-container">
+                    <input type="password" id="new-password" name="password" class="password-input" placeholder="Entrez votre mot de passe" autocomplete="new-password">
+                    <span class="toggle-password" id="toggle-password">👁️</span>
+                </div>
+                <div class="strength-meter">
+                    <div class="strength-meter-fill" id="strength-meter-fill"></div>
+                </div>
+                <div class="password-feedback" id="password-feedback">
+                    La force du mot de passe apparaîtra ici
+                </div>
+                <ul class="requirements-list">
+                    <li class="requirement-item" id="length">Au moins 8 caractères</li>
+                    <li class="requirement-item" id="uppercase">Au moins une lettre majuscule</li>
+                    <li class="requirement-item" id="lowercase">Au moins une lettre minuscule</li>
+                    <li class="requirement-item" id="number">Au moins un chiffre</li>
+                    <li class="requirement-item" id="special">Au moins un caractère spécial (!@#$%^&*)</li>
+                </ul>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirm-password">Confirmer le mot de passe</label>
+                <div class="password-container">
+                    <input type="password" id="confirm-password" name="confirm" class="password-input" placeholder="Confirmez votre mot de passe" autocomplete="new-password">
+                </div>
+                <div class="password-feedback" id="match-feedback"></div>
+            </div>
+            
+            <button type="submit" class="submit-btn" id="submit-btn" style="background-color:#e74c3c;" disabled>Créer mon mot de passe</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordInput = document.getElementById('new-password');
+            const confirmInput = document.getElementById('confirm-password');
+            const togglePassword = document.getElementById('toggle-password');
+            const strengthMeter = document.getElementById('strength-meter-fill');
+            const passwordFeedback = document.getElementById('password-feedback');
+            const matchFeedback = document.getElementById('match-feedback');
+            const submitBtn = document.getElementById('submit-btn');
+            
+            const requirements = {
+                length: { regex: /.{8,}/, element: document.getElementById('length') },
+                uppercase: { regex: /[A-Z]/, element: document.getElementById('uppercase') },
+                lowercase: { regex: /[a-z]/, element: document.getElementById('lowercase') },
+                number: { regex: /[0-9]/, element: document.getElementById('number') },
+                special: { regex: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/, element: document.getElementById('special') }
+            };
+            
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                togglePassword.textContent = type === 'password' ? '👁️' : '👁️‍🗨️';
+            });
+            
+            passwordInput.addEventListener('input', function() {
+                const password = passwordInput.value;
+                let strength = 0;
+                let feedbackText = '';
+                let feedbackClass = '';
+                
+                for (const key in requirements) {
+                    const requirement = requirements[key];
+                    const isValid = requirement.regex.test(password);
+                    
+                    if (isValid) {
+                        requirement.element.classList.add('valid');
+                        strength++;
+                    } else {
+                        requirement.element.classList.remove('valid');
+                    }
+                }
+                
+                let percentage = (strength / 5) * 100;
+                strengthMeter.style.width = `${percentage}%`;
+                
+                if (password === '') {
+                    strengthMeter.className = 'strength-meter-fill';
+                    feedbackText = 'La force du mot de passe apparaîtra ici';
+                    feedbackClass = '';
+                } else if (strength === 0 || strength === 1) {
+                    strengthMeter.className = 'strength-meter-fill very-weak';
+                    feedbackText = 'Très faible';
+                    feedbackClass = 'text-danger';
+                } else if (strength === 2) {
+                    strengthMeter.className = 'strength-meter-fill weak';
+                    feedbackText = 'Faible';
+                    feedbackClass = 'text-danger';
+                } else if (strength === 3) {
+                    strengthMeter.className = 'strength-meter-fill medium';
+                    feedbackText = 'Moyen';
+                    feedbackClass = 'text-warning';
+                } else if (strength === 4) {
+                    strengthMeter.className = 'strength-meter-fill strong';
+                    feedbackText = 'Fort';
+                    feedbackClass = 'text-success';
+                } else {
+                    strengthMeter.className = 'strength-meter-fill very-strong';
+                    feedbackText = 'Très fort';
+                    feedbackClass = 'text-success';
+                }
+                
+                passwordFeedback.textContent = feedbackText;
+                passwordFeedback.className = `password-feedback ${feedbackClass}`;
+                
+                checkPasswordsMatch();
+                
+                updateSubmitButton(strength);
+            });
+            
+            confirmInput.addEventListener('input', function() {
+                checkPasswordsMatch();
+                updateSubmitButton();
+            });
+            
+            function checkPasswordsMatch() {
+                const password = passwordInput.value;
+                const confirm = confirmInput.value;
+                
+                if (confirm === '') {
+                    matchFeedback.textContent = '';
+                    matchFeedback.className = 'password-feedback';
+                } else if (password === confirm) {
+                    matchFeedback.textContent = 'Les mots de passe correspondent';
+                    matchFeedback.className = 'password-feedback text-success';
+                } else {
+                    matchFeedback.textContent = 'Les mots de passe ne correspondent pas';
+                    matchFeedback.className = 'password-feedback text-danger';
+                }
+            }
+            
+            function updateSubmitButton(strength) {
+                strength = strength || 0;
+                const password = passwordInput.value;
+                const confirm = confirmInput.value;
+                
+                if (strength >= 3 && password === confirm && confirm !== '') {
+                    submitBtn.disabled = false;
+                } else {
+                    submitBtn.disabled = false;
+                }
+            }
+        });
+    </script>
+    {% include "../layouts/erreur.html" %}
+</body>
+</html>

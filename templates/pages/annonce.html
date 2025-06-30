@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "css/main/main.css" %}">
+    <link rel="stylesheet" href="{% static "css/pages/annonce.css" %}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <title>Présentation d'une annonce de colocation</title>
+</head>
+<body>
+    {% include "../layouts/nav.html" %}
+    <div class="container">
+
+        <h1 class="property-title">{{annonce.title}}</h1>
+        <p class="property-address">{{annonce.adress}}</p>
+
+        <p class="property-price">{{annonce.rent}} MAD / mois</p>
+
+        <div class="property-details">
+            <div class="property-detail">
+                <i>🏠</i> {{annonce.house.property_type}}
+            </div>
+            <div class="property-detail">
+                <i>📏</i> {{annonce.house.surface}} m²
+            </div>
+            <div class="property-detail">
+                <i>🛏️</i> {{annonce.house.bedrooms}} chambres
+            </div>
+            <div class="property-detail">
+                <i>🪑</i> {{annonce.house.furnished}}
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="left-column">
+                <div class="gallery">
+                    <img src="{{images.0.image.url}}" alt="Photo principale de l'appartement" class="main-image">
+                    <p>Il reste que {{annonce.nombre_personne}} places disponible</p>
+                </div>
+
+                <div class="thumbnails" style="max-width:80%;overflow-x:auto;">
+                    {% for image in images  %}
+                        <img src="{{image.image.url}}" alt="Image du bien" class="thumbnail active">
+                    {% endfor %}
+                </div>
+
+                <div class="description-container">
+                    <h2 class="description-title">Description</h2>
+                    <div class="description">
+                        <p>{{ annonce.house.description|linebreaksbr }}</p>
+                    </div>
+
+                    <h3 class="features-title">Équipements et services</h3>
+                    <div class="features-list">
+                        <div class="feature-item">
+                            <i>{% if annonce.elevator %}✓{% else %}x{% endif %}</i> Ascenseur
+                        </div>
+                        <div class="feature-item">
+                            <i>{% if annonce.elevator %}✓{% else %}x{% endif %}</i> Balcon
+                        </div>
+                        <div class="feature-item">
+                            <i>{% if annonce.parking %}✓{% else %}x{% endif %}</i> Parking
+                        </div>
+                        <div class="feature-item">
+                            <i>✓</i> Lave-vaisselle
+                        </div>
+                        <div class="feature-item">
+                            <i>{% if annonce.ac %}✓{% else %}x{% endif %}</i> AC
+                        </div>
+                        <div class="feature-item">
+                            <i>✓</i> Réfrigérateur
+                        </div>
+                        <div class="feature-item">
+                            <i>✓</i> Wifi
+                        </div>
+                        <div class="feature-item">
+                            <i>✓</i> TV
+                        </div>
+                        <div class="feature-item">
+                            <i>{% if annonce.heating %}✓{% else %}x{% endif %}</i> Heating
+                        </div>
+                        <div class="feature-item">
+                            <i>{% if annonce.garden %}✓{% else %}x{% endif %}</i> Gardien
+                        </div>
+                    </div>
+                </div>
+
+                <div class="map-container" style="margin-top:1rem">
+                    <div id="map" style="height: 400px; width: 100%;"></div>
+                </div>
+            </div>
+
+            <div class="sidebar" style="width:120%">
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <img src="{{annonce.owner.ProfileImage.url}}" alt="Photo du propriétaire" class="agent-avatar">
+                        <div class="agent-info">
+                            <h3>{{annonce.owner.first_name}} {{annonce.owner.last_name}}</h3>
+                            <p>Propriétaire</p>
+                        </div>
+                    </div>
+                    {% if not request.user == annonce.owner %}
+                    <div class="agent-contact">
+                        <a style="text-decoration:none;" class="contact-button" href="{% url "specificmessages" annonce.owner.id %}" style="padding:.5rem 1rem">Contacter par message</a>
+                        <a href="{% url "postuler_annonce" annonce.owner.id annonce.id %}" class="contact-button" style="padding:.5rem 1rem;text-decoration:none;">Postuler</a>
+                        <button class="phone-button">Voir le téléphone</button>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="key-info">
+                    <h3>Informations clés</h3>
+                    <ul class="info-list">
+                        <li class="info-item">
+                            <span class="info-label">Loyer</span>
+                            <span class="info-value">{{annonce.rent}} MAD</span>
+                        </li>
+                        <li class="info-item">
+                            <span class="info-label">Charges</span>
+                            <span class="info-value">{{annonce.charges}} MAD</span>
+                        </li>
+                        <li class="info-item">
+                            <span class="info-label">Surface</span>
+                            <span class="info-value">{{annonce.house.surface}} m²</span>
+                        </li>
+                        <li class="info-item">
+                            <span class="info-label">Chauffage</span>
+                            <span class="info-value">Individuel</span>
+                        </li>
+                        <li class="info-item">
+                            <span class="info-label">DPE</span>
+                            <span class="info-value">C</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="similar-properties">
+            <h2 class="similar-title">Annonces similaires</h2>
+            <div class="similar-grid">
+            {% if similaire %}
+            {% for item in similaire  %}
+                    <a href="{% url "annonce_page" item.id %}" class="property-card" style="cursor:pointer;text-decoration:none;">
+                        <div class="card-image">
+                            <img src="{{item.photos.first.image.url}}" alt="Appartement similaire">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title">{{item.house.title}}</h3>
+                            <p class="card-address">{{item.house.adress}}</p>
+                            <p class="card-price">{{item.rent}} MAD / mois</p>
+                            <div class="card-features">
+                                <span>{{item.house.surface}} m²</span>
+                                <span>4 chambres</span>
+                                <span>{{item.house.furnished}}</span>
+                            </div>
+                        </div>
+                    </a>
+            {% endfor %}
+            {% else %}
+            <h2 style="letter-spacing : 1px">Aucune offre disponible</h2>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+    {% include "../layouts/erreur.html" %}
+    {% include "../layouts/footer.html" %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mainImage = document.querySelector('.main-image');
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            
+            thumbnails.forEach(thumb => {
+                thumb.addEventListener('click', function() {
+                    mainImage.src = this.src;
+                    
+                    thumbnails.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            const phoneButton = document.querySelector('.phone-button');
+            phoneButton.addEventListener('click', function() {
+                this.textContent = "{{ annonce.owner.phone_number }}"
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const address = "{{ annonce.house.address }}"; 
+    
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        const lat = data[0].lat;
+                        const lon = data[0].lon;
+    
+                        const map = L.map('map').setView([lat, lon], 13);
+    
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            attribution: '© OpenStreetMap contributors',
+                            maxZoom: 18,
+                        }).addTo(map);
+    
+                        L.marker([lat, lon]).addTo(map)
+                            .bindPopup(address)
+                            .openPopup();
+                    } else {
+                        document.getElementById('map').innerHTML = 'Adresse introuvable.';
+                    }
+                })
+                .catch(error => {
+                    console.error("Erreur de géocodage :", error);
+                    document.getElementById('map').innerHTML = 'Erreur lors du chargement de la carte.';
+                });
+        });
+    </script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</body>
+</html>

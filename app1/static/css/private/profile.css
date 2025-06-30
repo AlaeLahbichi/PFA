@@ -1,0 +1,368 @@
+:root {
+    --color-primary: #C0392B;       
+    --color-accent: #E74C3C;        
+    --color-background: #FDFEFE;    
+    --color-text: #2C3E50;          
+    --color-cta: #FF6F61;           
+    --color-secondary: #BDC3C7;     
+    --color-white: #FFFFFF;
+    --color-border: #BDC3C7;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 30px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--color-primary);
+}
+
+.header-actions {
+    display: flex;
+    gap: 15px;
+}
+
+button {
+    background-color: var(--color-cta);
+    color: var(--color-white);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: var(--color-accent);
+}
+
+button.secondary {
+    background-color: transparent;
+    border: 1px solid var(--color-cta);
+    color: var(--color-cta);
+}
+
+button.secondary:hover {
+    background-color: rgba(255, 111, 97, 0.1);
+}
+
+.page-title {
+    font-size: 28px;
+    color: var(--color-primary);
+    margin-bottom: 20px;
+}
+
+.account-container {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.sidebar {
+    background-color: var(--color-white);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    padding: 20px;
+    height: fit-content;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 20px;
+}
+
+.user-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--color-primary);
+    margin-bottom: 15px;
+}
+
+.user-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.user-email {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.status-badge {
+    background-color: #27AE60;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.menu-list {
+    list-style: none;
+}
+
+.menu-item {
+    margin-bottom: 10px;
+}
+
+.menu-item a {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--color-text);
+    transition: background-color 0.2s;
+}
+
+.menu-item a:hover {
+    background-color: rgba(0,0,0,0.05);
+}
+
+.menu-item a.active {
+    background-color: rgba(192, 57, 43, 0.1);
+    color: var(--color-primary);
+    font-weight: bold;
+}
+
+.menu-item i {
+    margin-right: 10px;
+    color: var(--color-primary);
+}
+
+.content {
+    background-color: var(--color-white);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    padding: 25px;
+}
+
+.content-title {
+    font-size: 22px;
+    color: var(--color-primary);
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.info-sections {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 25px;
+}
+
+.info-section {
+    margin-bottom: 30px;
+}
+
+.section-title {
+    font-size: 18px;
+    color: var(--color-primary);
+    margin-bottom: 15px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.info-item {
+    margin-bottom: 15px;
+}
+
+.info-label {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.info-value {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.subscription {
+    background-color: #F8F9FA;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.subscription-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.subscription-title {
+    font-weight: bold;
+    color: var(--color-primary);
+}
+
+.subscription-badge {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.subscription-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.subscription-item {
+    text-align: center;
+}
+
+.subscription-label {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.subscription-value {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.activity-log {
+    margin-top: 20px;
+}
+
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.activity-icon {
+    background-color: rgba(192, 57, 43, 0.1);
+    color: var(--color-primary);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.activity-content {
+    flex-grow: 1;
+}
+
+.activity-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.activity-time {
+    font-size: 12px;
+    color: #666;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-border);
+}
+
+.password-change-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.password-change-form input {
+    padding: .5rem 1rem;
+    border: 1.5px solid var(--color-cta);
+    width: 45%;
+}
+
+.password-change-form button {
+    width: 25%;
+}
+
+.password-change-form input:focus {
+    border: 1.5px solid var(--color-accent);
+}
+
+.lien {
+    display: flex;
+    gap: .5rem;
+    margin-bottom: .5rem;
+}
+
+.lien a {
+    text-decoration: none;
+    color: #666;
+}
+
+.lien a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .account-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .subscription-details {
+        grid-template-columns: 1fr;
+    }
+}

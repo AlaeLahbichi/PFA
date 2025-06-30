@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "css/auth/auth.css" %}">
+    <link rel="stylesheet" href="{% static "css/main/main.css" %}">
+    <title>Register Page</title>
+</head>
+<body>
+    <div class="auth-container">
+        <form action="{% url "register" %}" method="POST" class="form-info">
+            {% csrf_token %}
+            <div class="logo">
+                <a href="{% url "homepage" %}"><img src="{% static "images/logo.png" %}" alt="logo of the website"></a>
+            </div>
+            <div class="content">
+                <div class="box">
+                    <label for="username">Username</label>
+                    {{form.username}}
+                </div>
+                <div class="box">
+                    <label for="email">Adresse email</label>
+                    {{form.email}}
+                </div>
+                <div class="box">
+                    <label for="status">Status</label>
+                    {{form.status}}
+                </div>
+                <div class="box">
+                    <label for="Password">Mot de passe</label>
+                    {{form.password1}}
+                </div>
+                <div class="box">
+                    <label for="Password">Confirmer le mot de passe</label>
+                    {{form.password2}}
+                </div>
+            </div>
+            <div class="option" id="check">
+                <input type="checkbox" id="politique" name="politique">
+                <label for="politique">J'accepte les <a href="#">conditions d'utilisation</a> et la <a href="#">politique de confidentialité</a>.</label>
+            </div>
+            <div class="btn">
+                <button type="submit">S'inscrire</button>
+            </div>
+            <div class="other">
+                <p>Vous avez déjà un compte? <a href="{% url "login" %}"> Se connecter</a></p>
+            </div>
+        </form>
+    </div>
+    {% include "../layouts/erreur.html" %}
+    <script src="https://kit.fontawesome.com/1153728611.js" crossorigin="anonymous"></script>
+</body>
+</html>

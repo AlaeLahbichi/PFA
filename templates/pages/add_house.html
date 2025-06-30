@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Déposer une annonce de location</title>
+    <style>
+        :root {
+            --color-primary: #C0392B;       
+            --color-accent: #E74C3C;        
+            --color-background: #FDFEFE;    
+            --color-text: #2C3E50;          
+            --color-cta: #FF6F61;           
+            --color-secondary: #BDC3C7;     
+            --color-white: #FFFFFF;
+            --color-border: #BDC3C7;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--color-background);
+            color: var(--color-text);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--color-white);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        h1 {
+            color: var(--color-primary);
+            margin-bottom: 10px;
+        }
+
+        .description {
+            color: var(--color-text);
+            margin-bottom: 20px;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            background-color: var(--color-secondary);
+            color: var(--color-white);
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            gap: 20px;
+        }
+
+        .form-group {
+            flex: 1 1 300px;
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--color-text);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .form-check input {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .photo-upload {
+            border: 2px dashed var(--color-border);
+            padding: 30px;
+            text-align: center;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .photo-upload i {
+            font-size: 30px;
+            color: var(--color-secondary);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .photo-upload input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .image-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid var(--color-border);
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--color-cta);
+            color: var(--color-white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-accent);
+        }
+
+        .btn-secondary {
+            background-color: var(--color-secondary);
+            color: var(--color-white);
+        }
+
+        .btn-secondary:hover {
+            background-color: #95a5a6;
+        }
+
+        .price-input {
+            position: relative;
+        }
+
+        .price-input input {
+            padding-right: 30px;
+        }
+
+        .price-input::after {
+            content: "€";
+            position: absolute;
+            right: 10px;
+            top: 32px;
+            color: var(--color-text);
+        }
+
+        .info-text {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .upload-progress {
+            height: 8px;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+            margin-top: 10px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .upload-progress-bar {
+            height: 100%;
+            background-color: var(--color-primary);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .error-message {
+            color: var(--color-accent);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .form-group {
+                flex: 1 1 100%;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Ajouter un bien immobilier</h1>
+            <p class="description">Remplissez le formulaire ci-dessous pour ajouter un bien immobilier.</p>
+        </header>
+
+        <form action="" id="locationForm" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-section">
+                <h2 class="section-title">Informations sur le bien</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="propertyType">Type de bien</label>
+                        {{form.property_type}}
+                    </div>
+                    <div class="form-group">
+                        <label for="furnished">Meublé / Non meublé</label>
+                        {{form.furnished}}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="surface">Surface (m²)</label>
+                        {{form.surface}}
+                    </div>
+                    <div class="form-group">
+                        <label for="rooms">Nombre de pièces</label>
+                        {{form.rooms}}
+                    </div>
+                    <div class="form-group">
+                        <label for="bedrooms">Nombre de chambres</label>
+                        {{form.bedrooms}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2 class="section-title">Localisation</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="address">Adresse</label>
+                        {{form.address}}
+                    </div>
+                    <div class="form-group">
+                        <label for="city">Ville</label>
+                        {{form.city}}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="location_name">Location</label>
+                        {{form.location_name}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2 class="section-title">Description et équipements</h2>
+                <div class="form-group">
+                    <label for="title">Titre de l'annonce</label>
+                    {{form.title}}
+                    <p class="info-text">Un titre accrocheur augmente les chances de voir votre annonce consultée.</p>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description détaillée</label>
+                    {{form.description}}
+                    <p class="info-text">Une description détaillée et honnête attire des locataires plus qualifiés.</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Équipements</label>
+                    <div class="form-row">
+                        <div class="form-check">
+                            {{form.parking}}
+                            <label for="parking">Parking</label>
+                        </div>
+                        <div class="form-check">
+                            {{form.elevator}}
+                            <label for="elevator">Ascenseur</label>
+                        </div>
+                        <div class="form-check">
+                            {{form.balcony}}
+                            <label for="balcony">Balcon/Terrasse</label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-check">
+                            {{form.heating}}
+                            <label for="heating">Chauffage individuel</label>
+                        </div>
+                        <div class="form-check">
+                            {{form.ac}}
+                            <label for="ac">Climatisation</label>
+                        </div>
+                        <div class="form-check">
+                            {{form.garden}}
+                            <label for="garden">Jardin</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="buttons">
+                <button type="submit" class="btn btn-primary">Ajouter un bien immobilier</button>
+                <a href="{% url "homepage" %}" style="text-decoration:none;" type="button" class="btn btn-secondary">Annuler</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const photoInput = document.getElementById('photos');
+        const previewContainer = document.getElementById('preview-container');
+        const errorMessage = document.getElementById('errorMessage');
+        const progressBar = document.querySelector('.upload-progress');
+        const progressBarFill = document.querySelector('.upload-progress-bar');
+        const MAX_FILES = 10;
+        const MAX_FILE_SIZE = 5 * 1024 * 1024;
+        let selectedFiles = [];
+    
+        const dataTransfer = new DataTransfer();
+    
+        photoInput.addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+    
+            if (selectedFiles.length + files.length > MAX_FILES) {
+                errorMessage.textContent = `Vous ne pouvez pas uploader plus de ${MAX_FILES} photos.`;
+                return;
+            }
+    
+            errorMessage.textContent = '';
+            
+            progressBar.style.display = 'block';
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 5;
+                progressBarFill.style.width = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        progressBar.style.display = 'none';
+                        progressBarFill.style.width = '0%';
+                    }, 500);
+                }
+            }, 100);
+    
+            files.forEach(file => {
+                if (file.size > MAX_FILE_SIZE) {
+                    errorMessage.textContent = `Le fichier ${file.name} dépasse la taille maximale de 5MB.`;
+                    return;
+                }
+    
+                if (!file.type.startsWith('image/')) {
+                    errorMessage.textContent = `Le fichier ${file.name} n'est pas une image.`;
+                    return;
+                }
+    
+                selectedFiles.push(file);
+                dataTransfer.items.add(file); 
+    
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const previewDiv = document.createElement('div');
+                    previewDiv.className = 'image-preview';
+                    previewDiv.innerHTML = `
+                        <img src="${event.target.result}" alt="${file.name}">
+                        <button type="button" class="remove-image" data-filename="${file.name}">×</button>
+                    `;
+                    previewContainer.appendChild(previewDiv);
+                };
+                reader.readAsDataURL(file);
+            });
+    
+            photoInput.files = dataTransfer.files;
+        });
+    
+        previewContainer.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-image')) {
+                const filename = e.target.getAttribute('data-filename');
+                
+                selectedFiles = selectedFiles.filter(file => file.name !== filename);
+                
+                dataTransfer.items.clear();
+                selectedFiles.forEach(file => dataTransfer.items.add(file));
+                
+                photoInput.files = dataTransfer.files;
+                
+                e.target.closest('.image-preview').remove();
+            }
+        });
+    
+        document.getElementById('locationForm').addEventListener('submit', function(e) {
+            if (selectedFiles.length === 0) {
+                e.preventDefault();
+                errorMessage.textContent = 'Veuillez ajouter au moins une photo';
+                return;
+            }
+        });
+    </script>
+</body>
+</html>

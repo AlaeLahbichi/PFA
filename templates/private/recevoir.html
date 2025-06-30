@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="{% static "css/main/main.css" %}">
+  <link rel="stylesheet" href="{% static "css/private/recevoir.css" %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Candidatures de Location</title>
+</head>
+<body>
+  {% include "../layouts/nav.html" %}
+  <header>
+    <h1></h1>
+    <div class="stats">
+      <div class="stat-box">
+        <div class="stat-value">{{total}}</div>
+        <div class="stat-label">Total</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value">{{attente}}</div>
+        <div class="stat-label">En attente</div>
+      </div>
+    </div>
+  </header>
+  <div class="search-box">
+    <input type="text" class="search-input" placeholder="chercher des candidatures par leur id ">
+    <button class="search-btn">Rechercher</button>
+  </div>
+  
+  <div class="candidates-grid">
+    {% for offre in offres  %}
+    <div class="candidate-card" data-id="{{ offre.id }}">
+      <div class="candidate-status status-new" style="background-color:{% if offre.status == 'APPROUVÉE' %}#4CAF50{% elif offre.status == 'EN ATTENTE' %}	#FFC107{% endif %};">Candidature #CAN{{offre.id}}</div>
+      <div class="candidate-content">
+        <div class="candidate-header">
+          <div class="candidate-avatar">MD</div>
+          <div>
+            <div class="candidate-name">{% if offre.sender.first_name and offre.sender.last_name %}{{offre.sender.first_name}} {{offre.sender.last_name}} {% else %}{{offre.sender.username}}{% endif %}</div>
+            <div class="candidate-contact">{{offre.sender.email}}</div>
+          </div>
+        </div>
+        <div class="candidate-details">
+          <div class="detail-item">
+            <div class="detail-label">Revenus mensuels:</div>
+            <div class="detail-value">{{offre.sender.etudiant.revenu_mensuel_total}} MAD</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Profession:</div>
+            <div class="detail-value">{{offre.sender.status}}</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Taille du foyer:</div>
+            <div class="detail-value">{{offre.offre.house.rooms}} personnes</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Status:</div>
+            <div class="detail-value">{{offre.status}}</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Date de candidature:</div>
+            <div class="detail-value" style="align-content:center;">{{offre.created_at}}</div>
+          </div>
+        </div>
+        <div class="candidate-actions" style="margin-bottom:.5rem;">
+          <a class="action-btn approve-btn" style="text-decoration:none;" href="{% url "specificmessages" offre.sender.id %}">Contacter</a>
+          <a style="text-decoration:none;" href="{% url "other_profile" offre.sender.id %}" class="action-btn details-btn">Détails</a>
+        </div>
+        {% if offre.status == "EN ATTENTE" %}
+        <div class="candidate-actions">
+          <a class="action-btn approve-btn" href="{% url "accept_cand" offre.id %}" style="text-decoration:none;color: #fff;background-color: #27ae60;">Approuver</a>
+          <a style="text-decoration:none;color: #fff;background-color: #c0392b;" href="{% url "refuse_cand" offre.id %}" class="action-btn details-btn">Refuser</a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% include "../layouts/erreur.html" %}
+<script>
+  document.querySelector('.search-input').addEventListener('keyup', function (e) {
+    e.preventDefault();
+    const query = e.target.value;
+    const cards = document.querySelectorAll('.candidate-card');
+
+    if (query === "") {
+      cards.forEach(card => card.style.display = "block"); 
+    } else {
+      cards.forEach(card => {
+        const id = card.getAttribute('data-id');
+        if (id === query) {
+          card.style.display = "block";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
